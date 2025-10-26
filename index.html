@@ -30,7 +30,7 @@
 }
 </script>
 </head>
-  <body class="bg-blue-50">
+  <body class="bg-blue-50 leading-relaxed">
     <div id="root"></div>
     <script type="module">
       import React, { useState, useCallback, useEffect } from 'react';
@@ -179,40 +179,61 @@
 
       // components/Header.tsx
       const Header = ({ onSearch }) => {
-          const [searchTerm, setSearchTerm] = React.useState('');
+        const [searchTerm, setSearchTerm] = React.useState('');
 
-          const handleSearchSubmit = (e) => {
-              e.preventDefault();
-              if (searchTerm.trim()) {
-                  onSearch(searchTerm.trim());
-              }
-          };
+        const handleSearchSubmit = (e) => {
+          e.preventDefault();
+          if (searchTerm.trim()) {
+            onSearch(searchTerm.trim());
+          }
+        };
 
-          return React.createElement("header", { className: "relative p-6 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-2xl shadow-xl" },
-              React.createElement("div", { className: "text-center" },
-                  React.createElement("h1", { className: "text-4xl sm:text-5xl font-bold text-white tracking-wide" }, "سائنس کی دنیا"),
-                  React.createElement("p", { className: "text-white/90 text-lg sm:text-xl mt-6" }, "پانچویں جماعت کے طلباء کے لیے")
-              ),
-              React.createElement("form", { onSubmit: handleSearchSubmit, className: "absolute top-4 right-4 sm:top-6 sm:right-6" },
-                  React.createElement("div", { className: "flex flex-row-reverse" },
-                      React.createElement("input", {
-                          type: "text",
-                          placeholder: "تلاش کریں...",
-                          value: searchTerm,
-                          onChange: (e) => setSearchTerm(e.target.value),
-                          className: "px-3 py-1.5 text-base text-gray-800 bg-white/90 rounded-l-full focus:outline-none focus:ring-2 focus:ring-cyan-300 w-36 sm:w-48 transition-all duration-300"
-                      }),
-                      React.createElement("button", {
-                          type: "submit",
-                          className: "px-3 py-1.5 text-white bg-blue-700 rounded-r-full hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                      },
-                          React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", className: "h-5 w-5", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor" },
-                              React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" })
-                          )
-                      )
+        return React.createElement("header", { className: "p-6 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-2xl shadow-xl" },
+          React.createElement("div", { className: "flex flex-col sm:flex-row justify-between items-center gap-6" },
+            // 1. Search Bar (will be on the right in RTL)
+            React.createElement("form", { onSubmit: handleSearchSubmit, className: "w-full max-w-xs sm:w-auto" },
+              React.createElement("div", { className: "flex" },
+                React.createElement("input", {
+                  type: "text",
+                  placeholder: "تلاش کریں...",
+                  value: searchTerm,
+                  onChange: (e) => setSearchTerm(e.target.value),
+                  className: "px-3 py-1.5 text-base text-gray-800 bg-white/90 rounded-l-full focus:outline-none focus:ring-2 focus:ring-cyan-300 w-full transition-all duration-300"
+                }),
+                React.createElement("button", {
+                  type: "submit",
+                  className: "px-3 py-1.5 text-white bg-blue-700 rounded-r-full hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                },
+                  React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", className: "h-5 w-5", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor" },
+                    React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" })
                   )
+                )
               )
-          );
+            ),
+            // 2. Centered Title
+            React.createElement("div", { className: "text-center" },
+              React.createElement("h1", { className: "text-4xl sm:text-5xl font-bold text-white tracking-wide" }, "سائنس کی دنیا"),
+              React.createElement("p", { className: "text-white/90 text-lg sm:text-xl mt-2" }, "پانچویں جماعت کے طلباء کے لیے")
+            ),
+            // 3. Invisible placeholder (will be on the left in RTL to balance the layout)
+            React.createElement("div", { className: "hidden sm:block w-full max-w-xs sm:w-auto invisible", "aria-hidden": "true" },
+               React.createElement("div", { className: "flex" },
+                React.createElement("input", {
+                  type: "text",
+                  className: "px-3 py-1.5 text-base text-gray-800 bg-white/90 rounded-l-full w-full transition-all duration-300"
+                }),
+                React.createElement("button", {
+                  type: "button",
+                  className: "px-3 py-1.5 text-white bg-blue-700 rounded-r-full"
+                },
+                  React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", className: "h-5 w-5", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor" },
+                    React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" })
+                  )
+                )
+              )
+            )
+          )
+        );
       };
 
       // components/TopicSelector.tsx
@@ -222,7 +243,7 @@
             React.createElement("button", {
               key: topic,
               onClick: () => onSelect(topic),
-              className: `px-6 py-3 text-lg font-bold rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md focus:outline-none focus:ring-4 focus:ring-opacity-50 ${selectedTopic === topic ? 'bg-cyan-600 text-white ring-cyan-400' : 'bg-white text-cyan-700 hover:bg-cyan-100 ring-cyan-200'}`
+              className: `px-4 py-2 text-base sm:px-6 sm:py-3 sm:text-lg font-bold rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md focus:outline-none focus:ring-4 focus:ring-opacity-50 ${selectedTopic === topic ? 'bg-cyan-600 text-white ring-cyan-400' : 'bg-white text-cyan-700 hover:bg-cyan-100 ring-cyan-200'}`
             }, topic)
           )
         )
@@ -257,7 +278,7 @@
             React.createElement("p", { className: "text-center text-gray-600 mb-2" }, "منتخب صفحہ:"),
             React.createElement("img", { src: previewUrl, alt: "Selected page preview", className: "w-full h-auto rounded-lg" })
           ),
-          React.createElement("button", { onClick: handleConvertClick, disabled: loading || !selectedFile, className: "px-8 py-4 text-xl font-bold text-white bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100" }, loading ? '...تبدیل کیا جا رہا ہے' : 'اس صفحہ کو سبق میں تبدیل کریں')
+          React.createElement("button", { onClick: handleConvertClick, disabled: loading || !selectedFile, className: "px-6 py-3 text-lg sm:px-8 sm:py-4 sm:text-xl font-bold text-white bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100" }, loading ? '...تبدیل کیا جا رہا ہے' : 'اس صفحہ کو سبق میں تبدیل کریں')
         );
       };
 
@@ -278,13 +299,13 @@
           React.createElement("div", { className: "p-6 sm:p-10" },
             React.createElement("h3", { className: "text-3xl font-bold text-blue-800 mb-6 text-center" }, result.title),
             React.createElement("div", { className: "mb-8" }, React.createElement("img", { src: result.imageUrl, alt: "Generated visual", className: "w-full h-auto object-cover rounded-xl shadow-lg border-4 border-white" })),
-            React.createElement("div", { className: "text-right text-gray-800" }, React.createElement("p", { className: "text-2xl whitespace-pre-wrap leading-relaxed sm:leading-loose" }, result.explanation)),
+            React.createElement("div", { className: "text-right text-gray-800" }, React.createElement("p", { className: "text-2xl whitespace-pre-wrap leading-loose" }, result.explanation)),
             result.subTopics?.length > 0 && React.createElement("div", { className: "mt-10 pt-6 border-t-2 border-cyan-200" },
               React.createElement("h4", { className: "text-2xl font-bold text-cyan-800 mb-4 text-center" }, "مزید دریافت کریں"),
-              React.createElement("div", { className: "flex flex-wrap justify-center gap-3 sm:gap-4" }, result.subTopics.map(subTopic => React.createElement("button", { key: subTopic, onClick: () => onSubTopicClick(subTopic), className: "px-6 py-3 text-lg font-bold rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md focus:outline-none focus:ring-4 focus:ring-opacity-50 bg-white text-cyan-700 hover:bg-cyan-100 ring-cyan-200" }, subTopic)))
+              React.createElement("div", { className: "flex flex-wrap justify-center gap-3 sm:gap-4" }, result.subTopics.map(subTopic => React.createElement("button", { key: subTopic, onClick: () => onSubTopicClick(subTopic), className: "px-4 py-2 text-base sm:px-6 sm:py-3 sm:text-lg font-bold rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md focus:outline-none focus:ring-4 focus:ring-opacity-50 bg-white text-cyan-700 hover:bg-cyan-100 ring-cyan-200" }, subTopic)))
             ),
             React.createElement("div", { className: "mt-10 pt-6 border-t-2 border-cyan-200 text-center" },
-              React.createElement("button", { onClick: () => onStartQuiz(result.title), disabled: quizLoading, className: "px-8 py-4 text-xl font-bold text-white bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100" }, quizLoading ? '...ٹیسٹ تیار کیا جا رہا ہے' : 'اس سبق کا ٹیسٹ دیں')
+              React.createElement("button", { onClick: () => onStartQuiz(result.title), disabled: quizLoading, className: "px-6 py-3 text-lg sm:px-8 sm:py-4 sm:text-xl font-bold text-white bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100" }, quizLoading ? '...ٹیسٹ تیار کیا جا رہا ہے' : 'اس سبق کا ٹیسٹ دیں')
             )
           )
         );
@@ -325,11 +346,11 @@
           }
         };
 
-        const renderMCQs = (mcqs) => (mcqs && React.createElement("div", { key: "mcqs", className: "space-y-8" }, React.createElement("h3", { className: "text-2xl font-bold text-cyan-800 border-b-2 pb-2" }, "کثیر الانتخابی سوالات"), mcqs.map((q, index) => React.createElement("div", { key: index, className: "p-6 border border-gray-200 rounded-xl bg-white/50" }, React.createElement("p", { className: "text-xl font-semibold text-gray-800 mb-4 text-right" }, `${index + 1}. ${q.question}`), q.imageUrl && React.createElement("img", { src: q.imageUrl, alt: "Question visual", className: "my-4 rounded-lg shadow-sm mx-auto max-h-60" }), React.createElement("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-3" }, q.options.map(option => { let className = 'bg-white hover:bg-gray-100'; const isSelected = userAnswers.mcqs[index] === option; if (showAnswers) { const isCorrect = option === q.correctAnswer; if (isCorrect) className = 'bg-green-200'; else if (isSelected && !isCorrect) className = 'bg-red-200'; else className = 'bg-white opacity-60'; } else if (isSelected) { className = 'bg-cyan-200'; } return React.createElement("button", { key: option, onClick: () => handleMcqSelect(index, option), disabled: showAnswers, className: `w-full p-4 text-right text-lg rounded-lg border-2 transition-all duration-200 ${className} ${!showAnswers ? 'cursor-pointer' : 'cursor-default'}` }, option); })), showAnswers && React.createElement("div", { className: "mt-4 p-3 bg-green-100 text-green-800 font-bold rounded-lg text-right" }, `صحیح جواب: ${q.correctAnswer}`)))));
-        const renderFillInTheBlanks = (questions) => (questions && React.createElement("div", { key: "fillBlanks", className: "space-y-8" }, React.createElement("h3", { className: "text-2xl font-bold text-cyan-800 border-b-2 pb-2" }, "خالی جگہ پر کریں"), questions.map((q, index) => { const userAnswer = userAnswers.fillInTheBlanks[index] || ''; let inputClass = 'border-gray-300'; if (showAnswers) { inputClass = userAnswer.trim() === q.correctAnswer ? 'border-green-500 bg-green-100' : 'border-red-500 bg-red-100'; } return React.createElement("div", { key: index, className: "p-6 border border-gray-200 rounded-xl bg-white/50 text-right" }, React.createElement("div", { className: "text-xl flex flex-wrap items-center justify-end gap-2" }, React.createElement("span", null, q.question.split('____')[0]), React.createElement("input", { type: "text", value: userAnswer, disabled: showAnswers, onChange: (e) => handleFillInTheBlanksChange(index, e.target.value), className: `inline-block w-48 text-center p-1 text-xl border-2 rounded-md ${inputClass}` }), React.createElement("span", null, q.question.split('____')[1])), showAnswers && React.createElement("div", { className: "mt-4 p-3 bg-green-100 text-green-800 font-bold rounded-lg" }, `صحیح جواب: ${q.correctAnswer}`)); })));
-        const renderShortAnswerQuestions = (questions) => (questions && React.createElement("div", { key: "shortAnswers", className: "space-y-8" }, React.createElement("h3", { className: "text-2xl font-bold text-cyan-800 border-b-2 pb-2" }, "مختصر سوالات"), questions.map((q, index) => React.createElement("div", { key: index, className: "p-6 border border-gray-200 rounded-xl bg-white/50 text-right" }, React.createElement("p", { className: "text-xl font-semibold text-gray-800 mb-4" }, `${index + 1}. ${q.question}`), React.createElement("textarea", { value: userAnswers.shortAnswerQuestions[index] || '', disabled: showAnswers, onChange: (e) => handleShortAnswerChange(index, e.target.value), rows: 3, className: "w-full p-2 text-lg border-2 border-gray-300 rounded-lg disabled:bg-gray-100" }), showAnswers && React.createElement("div", { className: "mt-4 p-3 bg-green-100 text-green-800 font-bold rounded-lg text-right" }, `مثالی جواب: ${q.correctAnswer}`)))));
-        const renderDiagramLabeling = (diagrams) => (diagrams && React.createElement("div", { key: "diagrams", className: "space-y-8" }, React.createElement("h3", { className: "text-2xl font-bold text-cyan-800 border-b-2 pb-2" }, "ڈایاگرام لیبل کریں"), diagrams.map((q, index) => React.createElement("div", { key: index, className: "p-6 border border-gray-200 rounded-xl bg-white/50" }, React.createElement("p", { className: "text-xl font-semibold text-gray-800 mb-4 text-center" }, q.prompt), React.createElement("div", { className: "flex flex-col md:flex-row gap-8 items-center" }, React.createElement("div", { className: "flex-grow flex justify-center" }, React.createElement("img", { src: q.imageUrl, alt: "Diagram", className: "max-w-full md:max-w-md rounded-lg" })), React.createElement("div", { className: "w-full md:w-64 space-y-3" }, React.createElement("p", { className: "font-bold text-center" }, "لیبلز"), React.createElement("div", { className: "flex flex-wrap justify-center gap-2 mb-4" }, q.labels.map(label => React.createElement("div", { key: label, draggable: true, onDragStart: (e) => handleDragStart(e, label), className: `px-3 py-2 rounded-md shadow-sm ${!showAnswers ? 'cursor-grab' : ''} ${Object.values(userAnswers.diagramLabeling).includes(label) ? 'opacity-40' : 'bg-cyan-100'}` }, label))), React.createElement("div", { className: "space-y-2" }, q.correctMatches.map(({ number: num }) => { const userAnswer = userAnswers.diagramLabeling[num]; const correctAnswer = q.correctMatches.find(m => m.number === num)?.label; let className = 'bg-gray-100'; if (showAnswers) className = userAnswer === correctAnswer ? 'bg-green-200' : 'bg-red-200'; return React.createElement("div", { key: num, className: "flex items-center gap-2" }, React.createElement("span", { className: "font-bold" }, `${num}.`), React.createElement("div", { onDragOver: (e) => e.preventDefault(), onDrop: (e) => handleDrop(e, num), className: `w-full h-12 flex justify-center items-center rounded-lg border-2 border-dashed ${className}` }, userAnswer || 'یہاں ڈراپ کریں')); })))), showAnswers && React.createElement("div", { className: "mt-4 p-3 bg-green-100 text-green-800 font-bold rounded-lg text-right" }, React.createElement("p", null, "صحیح جوابات:"), React.createElement("ul", { className: "list-disc list-inside" }, q.correctMatches.map(({ label, number: num }) => React.createElement("li", { key: num }, `${num} - ${label}`))))))));
-        const renderTableCompletion = (tables) => (tables && React.createElement("div", { key: "tables", className: "space-y-8" }, React.createElement("h3", { className: "text-2xl font-bold text-cyan-800 border-b-2 pb-2" }, "جدول مکمل کریں"), tables.map((q, qIndex) => React.createElement("div", { key: qIndex, className: "p-6 border border-gray-200 rounded-xl bg-white/50 overflow-x-auto" }, React.createElement("p", { className: "text-xl font-semibold text-gray-800 mb-4 text-center" }, q.prompt), React.createElement("div", { className: "mb-4 flex flex-wrap justify-center gap-2 p-3 bg-cyan-50 rounded-lg" }, React.createElement("p", { className: "font-bold w-full text-center mb-2" }, "الفاظ کا بینک:"), q.wordBank.map(word => React.createElement("div", { key: word, draggable: true, onDragStart: (e) => handleDragStart(e, word), className: `px-3 py-2 rounded-md shadow-sm ${!showAnswers ? 'cursor-grab' : ''} ${Object.values(userAnswers.tableCompletion).includes(word) ? 'opacity-40' : 'bg-white'}` }, word))), React.createElement("table", { className: "w-full border-collapse text-center" }, React.createElement("thead", null, React.createElement("tr", null, q.headers.map(h => React.createElement("th", { key: h, className: "border p-2 bg-cyan-100" }, h)))), React.createElement("tbody", null, q.rows.map((row, rIndex) => React.createElement("tr", { key: rIndex }, row.map((cell, cIndex) => { if (cell !== null && cell.trim() !== 'مقررہ') return React.createElement("td", { key: cIndex, className: "border p-2 align-middle" }, cell); const key = `${qIndex}-${rIndex}-${cIndex}`; const userAnswer = userAnswers.tableCompletion[key] || null; const correctAnswer = q.correctAnswers.find(a => a.key === `${rIndex}-${cIndex}`)?.answer || ''; let dropZoneClass = 'bg-gray-100'; if (showAnswers) dropZoneClass = userAnswer === correctAnswer ? 'bg-green-200' : 'bg-red-200'; return React.createElement("td", { key: cIndex, className: "border p-1 align-middle", onDragOver: (e) => e.preventDefault(), onDrop: (e) => handleTableDrop(e, qIndex, rIndex, cIndex) }, React.createElement("div", { className: `w-full h-12 flex justify-center items-center rounded border-2 border-dashed ${dropZoneClass}` }, userAnswer || 'یہاں ڈراپ کریں'), showAnswers && userAnswer !== correctAnswer && React.createElement("p", { className: "text-red-600 text-sm" }, correctAnswer)); })))))))));
+        const renderMCQs = (mcqs) => (mcqs && React.createElement("div", { key: "mcqs", className: "space-y-8" }, React.createElement("h3", { className: "text-2xl font-bold text-cyan-800 border-b-2 pb-2" }, "کثیر الانتخابی سوالات"), mcqs.map((q, index) => React.createElement("div", { key: index, className: "p-6 border border-gray-200 rounded-xl bg-white/50" }, React.createElement("p", { className: "text-xl font-semibold text-gray-800 mb-4 text-right leading-relaxed" }, `${index + 1}. ${q.question}`), q.imageUrl && React.createElement("img", { src: q.imageUrl, alt: "Question visual", className: "my-4 rounded-lg shadow-sm mx-auto max-h-60" }), React.createElement("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-3" }, q.options.map(option => { let className = 'bg-white hover:bg-gray-100'; const isSelected = userAnswers.mcqs[index] === option; if (showAnswers) { const isCorrect = option === q.correctAnswer; if (isCorrect) className = 'bg-green-200'; else if (isSelected && !isCorrect) className = 'bg-red-200'; else className = 'bg-white opacity-60'; } else if (isSelected) { className = 'bg-cyan-200'; } return React.createElement("button", { key: option, onClick: () => handleMcqSelect(index, option), disabled: showAnswers, className: `w-full p-3 sm:p-4 text-right text-base sm:text-lg rounded-lg border-2 transition-all duration-200 ${className} ${!showAnswers ? 'cursor-pointer' : 'cursor-default'}` }, option); })), showAnswers && React.createElement("div", { className: "mt-4 p-3 bg-green-100 text-green-800 font-bold rounded-lg text-right" }, `صحیح جواب: ${q.correctAnswer}`)))));
+        const renderFillInTheBlanks = (questions) => (questions && React.createElement("div", { key: "fillBlanks", className: "space-y-8" }, React.createElement("h3", { className: "text-2xl font-bold text-cyan-800 border-b-2 pb-2" }, "خالی جگہ پر کریں"), questions.map((q, index) => { const userAnswer = userAnswers.fillInTheBlanks[index] || ''; let inputClass = 'border-gray-300'; if (showAnswers) { inputClass = userAnswer.trim() === q.correctAnswer ? 'border-green-500 bg-green-100' : 'border-red-500 bg-red-100'; } return React.createElement("div", { key: index, className: "p-6 border border-gray-200 rounded-xl bg-white/50 text-right" }, React.createElement("div", { className: "text-xl flex flex-wrap items-center justify-end gap-2 leading-relaxed" }, React.createElement("span", null, q.question.split('____')[0]), React.createElement("input", { type: "text", value: userAnswer, disabled: showAnswers, onChange: (e) => handleFillInTheBlanksChange(index, e.target.value), className: `inline-block w-32 sm:w-48 text-center p-1 text-xl border-2 rounded-md ${inputClass}` }), React.createElement("span", null, q.question.split('____')[1])), showAnswers && React.createElement("div", { className: "mt-4 p-3 bg-green-100 text-green-800 font-bold rounded-lg" }, `صحیح جواب: ${q.correctAnswer}`)); })));
+        const renderShortAnswerQuestions = (questions) => (questions && React.createElement("div", { key: "shortAnswers", className: "space-y-8" }, React.createElement("h3", { className: "text-2xl font-bold text-cyan-800 border-b-2 pb-2" }, "مختصر سوالات"), questions.map((q, index) => React.createElement("div", { key: index, className: "p-6 border border-gray-200 rounded-xl bg-white/50 text-right" }, React.createElement("p", { className: "text-xl font-semibold text-gray-800 mb-4 leading-relaxed" }, `${index + 1}. ${q.question}`), React.createElement("textarea", { value: userAnswers.shortAnswerQuestions[index] || '', disabled: showAnswers, onChange: (e) => handleShortAnswerChange(index, e.target.value), rows: 3, className: "w-full p-2 text-lg border-2 border-gray-300 rounded-lg disabled:bg-gray-100" }), showAnswers && React.createElement("div", { className: "mt-4 p-3 bg-green-100 text-green-800 font-bold rounded-lg text-right" }, `مثالی جواب: ${q.correctAnswer}`)))));
+        const renderDiagramLabeling = (diagrams) => (diagrams && React.createElement("div", { key: "diagrams", className: "space-y-8" }, React.createElement("h3", { className: "text-2xl font-bold text-cyan-800 border-b-2 pb-2" }, "ڈایاگرام لیبل کریں"), diagrams.map((q, index) => React.createElement("div", { key: index, className: "p-6 border border-gray-200 rounded-xl bg-white/50" }, React.createElement("p", { className: "text-xl font-semibold text-gray-800 mb-4 text-center leading-relaxed" }, q.prompt), React.createElement("div", { className: "flex flex-col md:flex-row gap-8 items-center" }, React.createElement("div", { className: "flex-grow flex justify-center" }, React.createElement("img", { src: q.imageUrl, alt: "Diagram", className: "max-w-full md:max-w-md rounded-lg" })), React.createElement("div", { className: "w-full md:w-64 space-y-3" }, React.createElement("p", { className: "font-bold text-center" }, "لیبلز"), React.createElement("div", { className: "flex flex-wrap justify-center gap-2 mb-4" }, q.labels.map(label => React.createElement("div", { key: label, draggable: true, onDragStart: (e) => handleDragStart(e, label), className: `px-3 py-2 rounded-md shadow-sm ${!showAnswers ? 'cursor-grab' : ''} ${Object.values(userAnswers.diagramLabeling).includes(label) ? 'opacity-40' : 'bg-cyan-100'}` }, label))), React.createElement("div", { className: "space-y-2" }, q.correctMatches.map(({ number: num }) => { const userAnswer = userAnswers.diagramLabeling[num]; const correctAnswer = q.correctMatches.find(m => m.number === num)?.label; let className = 'bg-gray-100'; if (showAnswers) className = userAnswer === correctAnswer ? 'bg-green-200' : 'bg-red-200'; return React.createElement("div", { key: num, className: "flex items-center gap-2" }, React.createElement("span", { className: "font-bold" }, `${num}.`), React.createElement("div", { onDragOver: (e) => e.preventDefault(), onDrop: (e) => handleDrop(e, num), className: `w-full h-12 flex justify-center items-center rounded-lg border-2 border-dashed ${className}` }, userAnswer || 'یہاں ڈراپ کریں')); })))), showAnswers && React.createElement("div", { className: "mt-4 p-3 bg-green-100 text-green-800 font-bold rounded-lg text-right" }, React.createElement("p", null, "صحیح جوابات:"), React.createElement("ul", { className: "list-disc list-inside" }, q.correctMatches.map(({ label, number: num }) => React.createElement("li", { key: num }, `${num} - ${label}`))))))));
+        const renderTableCompletion = (tables) => (tables && React.createElement("div", { key: "tables", className: "space-y-8" }, React.createElement("h3", { className: "text-2xl font-bold text-cyan-800 border-b-2 pb-2" }, "جدول مکمل کریں"), tables.map((q, qIndex) => React.createElement("div", { key: qIndex, className: "p-6 border border-gray-200 rounded-xl bg-white/50 overflow-x-auto" }, React.createElement("p", { className: "text-xl font-semibold text-gray-800 mb-4 text-center leading-relaxed" }, q.prompt), React.createElement("div", { className: "mb-4 flex flex-wrap justify-center gap-2 p-3 bg-cyan-50 rounded-lg" }, React.createElement("p", { className: "font-bold w-full text-center mb-2" }, "الفاظ کا بینک:"), q.wordBank.map(word => React.createElement("div", { key: word, draggable: true, onDragStart: (e) => handleDragStart(e, word), className: `px-3 py-2 rounded-md shadow-sm ${!showAnswers ? 'cursor-grab' : ''} ${Object.values(userAnswers.tableCompletion).includes(word) ? 'opacity-40' : 'bg-white'}` }, word))), React.createElement("table", { className: "w-full border-collapse text-center" }, React.createElement("thead", null, React.createElement("tr", null, q.headers.map(h => React.createElement("th", { key: h, className: "border p-2 bg-cyan-100" }, h)))), React.createElement("tbody", null, q.rows.map((row, rIndex) => React.createElement("tr", { key: rIndex }, row.map((cell, cIndex) => { if (cell !== null && cell.trim() !== 'مقررہ') return React.createElement("td", { key: cIndex, className: "border p-2 align-middle" }, cell); const key = `${qIndex}-${rIndex}-${cIndex}`; const userAnswer = userAnswers.tableCompletion[key] || null; const correctAnswer = q.correctAnswers.find(a => a.key === `${rIndex}-${cIndex}`)?.answer || ''; let dropZoneClass = 'bg-gray-100'; if (showAnswers) dropZoneClass = userAnswer === correctAnswer ? 'bg-green-200' : 'bg-red-200'; return React.createElement("td", { key: cIndex, className: "border p-1 align-middle", onDragOver: (e) => e.preventDefault(), onDrop: (e) => handleTableDrop(e, qIndex, rIndex, cIndex) }, React.createElement("div", { className: `w-full h-12 flex justify-center items-center rounded border-2 border-dashed ${dropZoneClass}` }, userAnswer || 'یہاں ڈراپ کریں'), showAnswers && userAnswer !== correctAnswer && React.createElement("p", { className: "text-red-600 text-sm" }, correctAnswer)); })))))))));
 
         return React.createElement("div", { className: "bg-white/80 backdrop-blur-sm p-6 sm:p-8 rounded-2xl shadow-lg" },
           React.createElement("div", { className: "flex justify-between items-center mb-6" },
@@ -408,12 +429,12 @@
             React.createElement(Header, { onSearch: handleSearch }),
             isQuizActive && quizData ?
               React.createElement(QuizView, { quiz: quizData, topic: result?.title || selectedTopic, showAnswers: showAnswers, onShowAnswersClick: handleShowAnswers, onExitQuizClick: handleExitQuiz }) :
-              React.createElement("main", null,
+              React.createElement("main", { className: "space-y-8" },
                 React.createElement("section", { className: "bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg space-y-6" },
                   React.createElement("h2", { className: "text-2xl font-bold text-cyan-800 text-center" }, "کتاب کے یونٹ میں سے ایک منتخب کریں"),
                   React.createElement(TopicSelector, { topics: SCIENCE_TOPICS, selectedTopic: selectedTopic, onSelect: handleTopicSelect })
                 ),
-                React.createElement("section", { className: "mt-8" },
+                React.createElement("section", null,
                   React.createElement(PageUploader, { onConvert: handleConvertPage, loading: loading })
                 ),
                 React.createElement(ResultDisplay, { loading: loading, error: error, result: result, onSubTopicClick: handleSubTopicClick, onStartQuiz: handleStartQuiz, quizLoading: quizLoading })
